@@ -1,0 +1,116 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired":
+    {
+        "major": 3,
+        "minor": 25,
+        "patch": 0
+    },
+    "configurePresets":
+    [
+        {
+            "name": "base",
+            "generator": "Ninja",
+            "binaryDir": "cmake-${presetName}",
+            "warnings":
+            {
+                "unusedCli": false
+            }
+        },
+        {
+            "name": "debug",
+            "cacheVariables":
+            {
+                "CORE_DEBUG": "1",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "release",
+            "cacheVariables":
+            {
+                "CORE_RELEASE": "1",
+                "CMAKE_BUILD_TYPE": "MinSizeRel"
+            }
+        },
+        {
+            "name": "test",
+            "inherits": "debug",
+            "cacheVariables":
+            {
+                "CORE_TEST": "1"
+            }
+        },
+        {
+            "name": "linux",
+            "cacheVariables":
+            {
+                "CORE_LINUX": "1"
+            },
+            "vendor":
+            {
+                "jetbrains.com/clion":
+                {
+                    "toolchain": "Clang"
+                }
+            }
+        },
+        {
+            "name": "emscripten",
+            "cacheVariables":
+            {
+                "CORE_EMSCRIPTEN": "1"
+            },
+            "vendor":
+            {
+                "jetbrains.com/clion":
+                {
+                    "toolchain": "Emscripten"
+                }
+            }
+        },
+        {
+            "name": "linux-x86-64-debug",
+            "inherits": ["linux", "debug", "base"]
+        },
+        {
+            "name": "linux-x86-64-release",
+            "inherits": ["linux", "release", "base"]
+        },
+        {
+            "name": "linux-x86-64-test",
+            "inherits": ["linux", "test", "base"]
+        },
+        {
+            "name": "emscripten-debug",
+            "inherits": ["emscripten", "debug", "base"]
+        },
+        {
+            "name": "emscripten-release",
+            "inherits": ["emscripten", "release", "base"]
+        }
+    ],
+    "buildPresets":
+    [
+        {
+            "name": "linux_x86_64 (debug)",
+            "configurePreset": "linux-x86-64-debug"
+        },
+        {
+            "name": "linux_x86_64 (release)",
+            "configurePreset": "linux-x86-64-release"
+        },
+        {
+            "name": "linux_x86_64 (test)",
+            "configurePreset": "linux-x86-64-test"
+        },
+        {
+            "name": "emscripten (debug)",
+            "configurePreset": "emscripten-debug"
+        },
+        {
+            "name": "emscripten (release)",
+            "configurePreset": "emscripten-release"
+        }
+    ]
+}
