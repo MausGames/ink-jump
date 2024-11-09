@@ -11,7 +11,8 @@
 
 // ****************************************************************
 CGame::CGame()noexcept
-: m_apWall     {}
+: m_Arrow      ()
+, m_apWall     {}
 , m_WallList   (GAME_RESERVE_WALLS)
 , m_WallMemory (sizeof(CWall), GAME_RESERVE_WALLS)
 , m_fProgress  (0.0f)

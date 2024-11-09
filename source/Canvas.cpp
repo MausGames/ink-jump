@@ -11,7 +11,8 @@
 
 // ****************************************************************
 CCanvas::CCanvas()noexcept
-: m_Dark        ()
+: coreObject3D  ()
+, m_Dark        ()
 , m_aSide       {}
 , m_fDarkHeight (0.0f)
 {

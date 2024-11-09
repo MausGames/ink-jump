@@ -11,7 +11,8 @@
 
 // ****************************************************************
 CArrow::CArrow()noexcept
-: m_vVelocity   (coreVector2(0.0f,0.0f))
+: coreObject3D  ()
+, m_vVelocity   (coreVector2(0.0f,0.0f))
 , m_vOldPos     (coreVector2(0.0f,0.0f))
 , m_Sticky      {}
 , m_pCurWall    (NULL)

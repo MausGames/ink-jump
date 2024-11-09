@@ -51,7 +51,7 @@ public:
 
     inline const coreFloat& GetProgress()const {return m_fProgress;}
     inline const coreFloat& GetTop     ()const {return m_fTop;}
-    inline       coreFloat  GetTime    ()const {return m_fTime;}
+    inline const coreFloat& GetTime    ()const {return m_fTime;}
 
 
 private:

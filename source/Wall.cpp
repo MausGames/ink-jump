@@ -11,7 +11,8 @@
 
 // ****************************************************************
 CWall::CWall()noexcept
-: m_vOldPos    (coreVector2(0.0f,0.0f))
+: coreObject3D ()
+, m_vOldPos    (coreVector2(0.0f,0.0f))
 , m_vOldDir    (coreVector2(0.0f,0.0f))
 , m_vBasePos   (coreVector2(0.0f,0.0f))
 , m_fBaseSize  (0.0f)
