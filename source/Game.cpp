@@ -112,9 +112,7 @@ void CGame::Move()
         g_pPath->StartTrack(m_Arrow.GetPosition().xy());
     }
 
-    const coreVector2 vArrowMove   = m_Arrow.GetPosition().xy() - m_Arrow.GetOldPos();
-    const coreVector2 vArrowRayDir = vArrowMove.IsNull() ? coreVector2(0.0f,1.0f) : vArrowMove.Normalized();
-    const coreVector2 vArrowRayPos = m_Arrow.GetOldPos();
+    const coreVector2 vArrowMove = m_Arrow.GetPosition().xy() - m_Arrow.GetOldPos();
 
     if(!m_Arrow.IsSticky() && !vArrowMove.IsNull() && !m_Arrow.GetJumped())
     {
@@ -127,55 +125,45 @@ void CGame::Move()
             if(pWall == m_Arrow.GetLastWall())             continue;
             if(!m_bStarted && m_apWall.index(it))          break;
 
-            for(coreUintW i = 0u; i < 2u; ++i)
+            const coreFloat fSide = SIGN(coreVector2::Dot(m_Arrow.GetOldPos() - pWall->GetOldPos(), pWall->GetOldDir()));
+
+            const coreVector2 vPos    = pWall->GetPosition().xy() + pWall->GetDirection().xy() * pWall->GetCollisionRange().y * fSide;
+            const coreVector2 vPosOld = pWall->GetOldPos()        + pWall->GetOldDir()         * pWall->GetCollisionRange().y * fSide;
+
+            const coreVector2 vDiff    = m_Arrow.GetPosition().xy() - vPos;
+            const coreVector2 vDiffOld = m_Arrow.GetOldPos()        - vPosOld;
+
+            const coreFloat fDot    = coreVector2::Dot(vDiff,    pWall->GetDirection().xy());
+            const coreFloat fDotOld = coreVector2::Dot(vDiffOld, pWall->GetOldDir());
+
+            if((SIGN(fDot) != SIGN(fDotOld)) && (SIGN(fDot) != fSide))
             {
-                const coreFloat fSide = i ? -1.0f : 1.0f;
+                const coreFloat fOffset    = coreVector2::Dot(vDiff,    pWall->GetDirection().xy().Rotated90());
+                const coreFloat fOffsetOld = coreVector2::Dot(vDiffOld, pWall->GetOldDir()        .Rotated90());
+                const coreFloat fCenter    = LERP(fOffset, fOffsetOld, STEP(fDot, fDotOld, 0.0f));
 
-                const coreVector2 vPos    = pWall->GetPosition().xy() + pWall->GetDirection().xy() * pWall->GetCollisionRange().y * fSide;
-                const coreVector2 vPosOld = pWall->GetOldPos()        + pWall->GetOldDir()         * pWall->GetCollisionRange().y * fSide;
+                const coreVector2 vRealDiff = pWall->GetDirection().xy().Rotated90() * fCenter;
 
-                const coreVector2 vDiff    = m_Arrow.GetPosition().xy() - vPos;
-                const coreVector2 vDiffOld = m_Arrow.GetOldPos()        - vPosOld;
-
-                const coreFloat fDot    = coreVector2::Dot(vDiff,    pWall->GetDirection().xy());
-                const coreFloat fDotOld = coreVector2::Dot(vDiffOld, pWall->GetOldDir());
-
-                if((SIGN(fDot) != SIGN(fDotOld)) && (SIGN(fDot) != SIGN(fSide)))
+                if((vRealDiff.LengthSq() < POW2(pWall->GetCollisionRange().x)) &&
+                   (vDiff    .LengthSq() < POW2(pWall->GetCollisionRange().x)))
                 {
-                    const coreVector2 vRayDir = pWall->GetDirection().xy().Rotated90();
-                    const coreVector2 vRayPos = vPos - vRayDir * pWall->GetCollisionRange().x;
+                    const coreVector2 vIntersection = vPos + vRealDiff;
 
-                    coreVector2 vIntersection;
-                    if(coreVector2::Intersect(vRayPos, vRayDir, vArrowRayPos, vArrowRayDir, &vIntersection))
+                    m_Arrow.MakeSticky(pWall, vIntersection, (fDotOld > 0.0f) ? 0u : 2u);
+
+                    g_pPath->AddSplat(vIntersection, m_Arrow.GetVelocity());
+                    g_pPath->StopTrack();
+
+                    if(!m_bStarted)
                     {
-                        const coreVector2 vRealDiff = vPos - vIntersection;
-
-                        if((vRealDiff.LengthSq() < POW2(pWall->GetCollisionRange().x)) &&
-                           (vDiff    .LengthSq() < POW2(pWall->GetCollisionRange().x)))
+                        m_bStarted = true;
+                        for(coreUintW j = 0u; j < ARRAY_SIZE(g_aMusicPlayer); ++j)
                         {
-                            if(SIGN(coreVector2::Dot(vDiffOld, pWall->GetDirection().xy())) == SIGN(fDot))
-                            {
-                                const coreVector2 vCenter = vArrowRayPos + vArrowMove * 0.5f;
-                                vIntersection = vCenter + pWall->GetDirection().xy() * SIGN(coreVector2::Dot(vCenter - vPos, pWall->GetDirection().xy()));
-                            }
-
-                            m_Arrow.MakeSticky(pWall, vIntersection, (fDotOld > 0.0f) ? 0u : 2u);
-
-                            g_pPath->AddSplat(vIntersection, m_Arrow.GetVelocity());
-                            g_pPath->StopTrack();
-
-                            if(!m_bStarted)
-                            {
-                                m_bStarted = true;
-                                for(coreUintW j = 0u; j < ARRAY_SIZE(g_aMusicPlayer); ++j)
-                                {
-                                    g_aMusicPlayer[j].Play();
-                                }
-                            }
-
-                            break;
+                            g_aMusicPlayer[j].Play();
                         }
                     }
+
+                    break;
                 }
             }
         }

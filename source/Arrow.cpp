@@ -146,7 +146,7 @@ void CArrow::Move()
             m_pCurWall->Bounce();
 
             m_pLastWall  = m_pCurWall;
-            m_fLastDelay = 0.1f;
+            m_fLastDelay = ARROW_LAST_DELAY;
             m_pCurWall   = NULL;
 
             m_bJumped   = true;
@@ -177,7 +177,7 @@ void CArrow::Move()
                (ABS(vTest.y) > m_pCurWall->GetCollisionRange().y))
             {
                 m_pLastWall  = m_pCurWall;
-                m_fLastDelay = 0.1f;
+                m_fLastDelay = ARROW_LAST_DELAY;
                 m_pCurWall   = NULL;
             }
         }
@@ -241,5 +241,5 @@ coreVector2 CArrow::__CalcStickyPos()const
     ASSERT(m_pCurWall)
     return m_pCurWall->GetPosition ().xy() +
            m_pCurWall->GetDirection().xy().Rotated90() * m_Sticky.fOffset +
-           m_pCurWall->GetDirection().xy() * m_pCurWall->GetVisualRange().yx().MapStepRotated90(m_Sticky.iSide).x;
+           m_pCurWall->GetDirection().xy() * (m_pCurWall->GetVisualRange().yx().MapStepRotated90(m_Sticky.iSide).x * (1.0f + CORE_MATH_PRECISION));
 }
