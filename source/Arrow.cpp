@@ -77,11 +77,11 @@ void CArrow::Move()
             vMove.y += 1.0f;
         }
 
-        bAction = Core::Input->GetJoystickButton(CORE_INPUT_JOYSTICK_ANY, SDL_CONTROLLER_BUTTON_A, CORE_INPUT_PRESS) ||
-                  Core::Input->GetJoystickButton(CORE_INPUT_JOYSTICK_ANY, SDL_CONTROLLER_BUTTON_B, CORE_INPUT_PRESS) ||
-                  Core::Input->GetKeyboardButton(CORE_INPUT_KEY(SPACE),                            CORE_INPUT_PRESS) ||
-                  Core::Input->GetKeyboardButton(CORE_INPUT_KEY(RETURN),                           CORE_INPUT_PRESS) ||
-                  Core::Input->GetMouseButton   (CORE_INPUT_LEFT,                                  CORE_INPUT_PRESS);
+        bAction = Core::Input->GetJoystickButton(CORE_INPUT_JOYSTICK_ANY, CORE_INPUT_BUTTON_A, CORE_INPUT_PRESS) ||
+                  Core::Input->GetJoystickButton(CORE_INPUT_JOYSTICK_ANY, CORE_INPUT_BUTTON_B, CORE_INPUT_PRESS) ||
+                  Core::Input->GetKeyboardButton(CORE_INPUT_KEY(SPACE),                        CORE_INPUT_PRESS) ||
+                  Core::Input->GetKeyboardButton(CORE_INPUT_KEY(RETURN),                       CORE_INPUT_PRESS) ||
+                  Core::Input->GetMouseButton   (CORE_INPUT_LEFT,                              CORE_INPUT_PRESS);
     }
 
     if(m_pCurWall)

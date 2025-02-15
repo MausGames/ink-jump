@@ -11,9 +11,14 @@
 // project settings
 const coreChar* const CoreApp::Settings::Name                          = "Ink Jump";
 const coreChar* const CoreApp::Settings::Version                       = "1.0.0";
+const coreChar* const CoreApp::Settings::Identifier                    = "at.maus-games.ink-jump";
+const coreChar* const CoreApp::Settings::Creator                       = "Martin Mauersics";
+const coreChar* const CoreApp::Settings::Year                          = "2024";
+const coreChar* const CoreApp::Settings::Website                       = "https://www.maus-games.at";
 const coreChar* const CoreApp::Settings::IconPath                      = "data/textures/game_icon.webp";
 const coreChar* const CoreApp::Settings::CursorPath                    = "data/textures/default_cursor.webp";
 const coreBool        CoreApp::Settings::UserManagement                = false;
+const coreDouble      CoreApp::Settings::System::AspectRatio           = 16.0/9.0;
 const coreUint8       CoreApp::Settings::Graphics::DepthSize           = 16u;
 const coreUint8       CoreApp::Settings::Graphics::StencilSize         = 0u;
 const coreBool        CoreApp::Settings::Graphics::AlphaChannel        = false;
