@@ -12,7 +12,7 @@
 
 
 // ****************************************************************
-inline FUNC_PURE coreFloat FrictionFactor(const coreFloat fStrength)
+inline coreFloat FrictionFactor(const coreFloat fStrength)
 {
     return POW(1.0f - fStrength * (1.0f / 60.0f), TIME * 60.0f);
 }
