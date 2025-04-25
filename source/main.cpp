@@ -21,7 +21,7 @@ STATIC_MEMORY(CGame,      g_pGame)
 void CoreApp::Init()
 {
     Core::Graphics->SetCamera(CAMERA_POSITION, CAMERA_DIRECTION, CAMERA_ORIENTATION);
-    Core::Graphics->SetView(Core::System->GetResolution(), DEG_TO_RAD(45.0f), 10.0f, 500.0f);
+    Core::Graphics->SetView(Core::System->GetResolution(), DEG_TO_RAD(45.0f), 10.0f, 500.0f, 0.0f);
 
     for(coreUintW i = 0u; i < ARRAY_SIZE(g_aMusicPlayer); ++i)
     {
