@@ -1,3 +1,3 @@
 @ECHO OFF
 
-CALL ..\..\CoreEngine\tools\scripts\download_archive.bat ink-jump launcher "..\executable"
+CALL ..\..\core-engine\tools\scripts\download_archive.bat ink-jump launcher "..\executable"
