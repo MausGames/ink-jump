@@ -9,9 +9,9 @@
 #include "engine/util_color.glsl"
 
 
-uniform float u_v1Time;
+uniform highp float u_v1Time;
 
-varying vec3 v_v3Relative;
+smoothEx varying vec3 v_v3Relative;
 
 
 void FragmentMain()

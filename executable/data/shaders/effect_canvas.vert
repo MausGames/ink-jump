@@ -9,7 +9,7 @@
 #include "engine/data_transform_3d.glsl"
 
 
-varying vec3 v_v3Relative;
+smoothEx varying vec3 v_v3Relative;
 
 
 void VertexMain()

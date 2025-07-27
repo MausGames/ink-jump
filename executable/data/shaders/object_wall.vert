@@ -13,8 +13,8 @@
     attribute float u_v1Length;
     attribute float u_v1LengthDiv;
 #else
-    uniform float u_v1Length;
-    uniform float u_v1LengthDiv;
+    uniform highp float u_v1Length;
+    uniform highp float u_v1LengthDiv;
 #endif
 
 
