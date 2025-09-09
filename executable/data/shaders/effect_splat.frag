@@ -9,7 +9,7 @@
 #include "engine/util_color.glsl"
 
 
-smoothEx varying float v_v1Height;
+smooth varying float v_v1Height;
 
 
 void FragmentMain()

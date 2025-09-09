@@ -9,7 +9,7 @@
 #include "engine/data_transform_3d.glsl"
 
 
-smoothEx varying float v_v1Height;
+smooth varying float v_v1Height;
 
 
 void VertexMain()
