@@ -1,5 +1,6 @@
 # Ink Jump
 
+[![engine: core](material/readme/badge_engine.svg)](https://github.com/MausGames/core-engine)
 [![software license: zlib](material/readme/badge_license_software.svg)](LICENSE.txt)
 [![content license: CC BY](material/readme/badge_license_content.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![credits.txt](material/readme/badge_credits.svg)](executable/data/credits.txt)
@@ -12,16 +13,15 @@ Thrown down into the abyss, you find yourself at the very bottom. Are you determ
 
 Ink Jump is a **reflective precision platformer** made in a couple of [Mi'pu'mi][1] days with the jam theme "Inferno".
 
-#
+## Links
 
 **Browser Version:**  
 <https://mausgames.itch.io/ink-jump>
 
 **Music:**  
-by Tim Beek (<https://timbeek.com>)  
-from Future Adventures Music Pack (<https://timbeek.itch.io/future-adventures>)
+by [Tim Beek](https://timbeek.com) from [Future Adventures Music Pack](https://timbeek.itch.io/future-adventures)
 
-#
+<br>
 
 <table>
     <tr>
