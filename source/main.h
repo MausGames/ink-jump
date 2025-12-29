@@ -43,7 +43,6 @@
 
 // ****************************************************************
 // game headers
-#include "Utilities.h"
 #include "Interface.h"
 #include "Canvas.h"
 #include "Wall.h"

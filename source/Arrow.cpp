@@ -116,7 +116,7 @@ void CArrow::Move()
                 else if(vMove.y > 0.0f) m_vVelocity.y += 10.0f * TIME;
             }
 
-            m_vVelocity.x *= FrictionFactor(4.0f);
+            m_vVelocity.x *= coreMath::Friction(4.15f, TIME);
             m_vVelocity.y  = CLAMP(m_vVelocity.y, -300.0f, 300.0f);
         }
 
@@ -152,7 +152,7 @@ void CArrow::Move()
             m_bJumped   = true;
             m_fRotation = 1.0f;
 
-            if(m_pJumpSound.IsUsable()) m_pJumpSound->PlayPosition(NULL, 1.0f, 0.8f + 0.2f * Core::Rand->Float(-1.0f,1.0f), false, 0u, this->GetPosition());
+            if(m_pJumpSound.IsUsable()) m_pJumpSound->PlayPosition(NULL, 1.0f, 0.8f + 0.2f * Core::Rand->Float(-1.0f,1.0f), false, CORE_AUDIO_TYPE_NONE, CORE_AUDIO_EFFECT_NONE, this->GetPosition());
         }
     }
 
@@ -231,7 +231,7 @@ void CArrow::MakeSticky(CWall* pWall, const coreVector2 vIntersection, const cor
     this->SetPosition(coreVector3(this->__CalcStickyPos(), 0.0f));
     this->coreObject3D::Move();
 
-    if(m_pStickSound.IsUsable()) m_pStickSound->PlayPosition(NULL, 1.0f, 0.8f + 0.2f * Core::Rand->Float(-1.0f,1.0f), false, 0u, this->GetPosition());
+    if(m_pStickSound.IsUsable()) m_pStickSound->PlayPosition(NULL, 1.0f, 0.8f + 0.2f * Core::Rand->Float(-1.0f,1.0f), false, CORE_AUDIO_TYPE_NONE, CORE_AUDIO_EFFECT_NONE, this->GetPosition());
 }
 
 
