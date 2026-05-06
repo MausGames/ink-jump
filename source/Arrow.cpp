@@ -29,8 +29,8 @@ CArrow::CArrow()noexcept
     this->SetSize  (coreVector3(1.0f,1.0f,1.0f) * 0.78f);
     this->SetColor3(coreVector3(1.0f,1.0f,1.0f) * COLOR_BLACK);
 
-    m_pJumpSound  = Core::Manager::Resource->Get<coreSound>("jump.opus");
-    m_pStickSound = Core::Manager::Resource->Get<coreSound>("stick.opus");
+    m_pJumpSound  = Core::Manager::Resource->Get("jump.opus");
+    m_pStickSound = Core::Manager::Resource->Get("stick.opus");
 }
 
 
