@@ -12,6 +12,8 @@
 // ****************************************************************
 CArrow::CArrow()noexcept
 : coreObject3D  ()
+, m_aEyeWhite   {}
+, m_aEyeBlack   {}
 , m_vVelocity   (coreVector2(0.0f,0.0f))
 , m_vOldPos     (coreVector2(0.0f,0.0f))
 , m_Sticky      {}
@@ -20,6 +22,7 @@ CArrow::CArrow()noexcept
 , m_fLastDelay  (0.0f)
 , m_bJumped     (false)
 , m_fRotation   (0.0f)
+, m_vView       (coreVector2(0.0f,0.0f))
 , m_pJumpSound  (NULL)
 , m_pStickSound (NULL)
 {
@@ -29,8 +32,50 @@ CArrow::CArrow()noexcept
     this->SetSize  (coreVector3(1.0f,1.0f,1.0f) * 0.78f);
     this->SetColor3(coreVector3(1.0f,1.0f,1.0f) * COLOR_BLACK);
 
+    for(coreUintW i = 0u; i < ARROW_EYES; ++i)
+    {
+        m_aEyeWhite[i].DefineModel  (Core::Manager::Object->GetLowQuad());
+        m_aEyeWhite[i].DefineProgram("object_eye_program");
+
+        m_aEyeWhite[i].SetSize  (coreVector3(ARROW_EYE_SIZE_WHITE, 1.0f));
+        m_aEyeWhite[i].SetColor3(coreVector3(1.0f,1.0f,1.0f) * COLOR_WHITE);
+    }
+
+    for(coreUintW i = 0u; i < ARROW_EYES; ++i)
+    {
+        m_aEyeBlack[i].DefineModel  (Core::Manager::Object->GetLowQuad());
+        m_aEyeBlack[i].DefineProgram("object_eye_program");
+
+        m_aEyeBlack[i].SetSize  (coreVector3(ARROW_EYE_SIZE_BLACK, 1.0f));
+        m_aEyeBlack[i].SetColor3(coreVector3(1.0f,1.0f,1.0f) * COLOR_BLACK);
+    }
+
     m_pJumpSound  = Core::Manager::Resource->Get("jump.opus");
     m_pStickSound = Core::Manager::Resource->Get("stick.opus");
+}
+
+
+// ****************************************************************
+void CArrow::Render()
+{
+    this->coreObject3D::Render();
+
+    if(g_pGame->IsStarted())
+    {
+        glDisable(GL_DEPTH_TEST);
+        {
+            for(coreUintW i = 0u; i < ARROW_EYES; ++i)
+            {
+                m_aEyeWhite[i].Render();
+            }
+
+            for(coreUintW i = 0u; i < ARROW_EYES; ++i)
+            {
+                m_aEyeBlack[i].Render();
+            }
+        }
+        glEnable(GL_DEPTH_TEST);
+    }
 }
 
 
@@ -213,6 +258,10 @@ void CArrow::Move()
     }
 
     this->coreObject3D::Move();
+
+    m_vView = LERP(vMove.IsNull() ? coreVector2(0.0f,0.0f) : vMove.Normalized(), m_vView, coreMath::Friction(24.0f, TIME));
+
+    this->__MoveEyes();
 }
 
 
@@ -231,7 +280,37 @@ void CArrow::MakeSticky(CWall* pWall, const coreVector2 vIntersection, const cor
     this->SetPosition(coreVector3(this->__CalcStickyPos(), 0.0f));
     this->coreObject3D::Move();
 
+    this->__MoveEyes();
+
     if(m_pStickSound.IsUsable()) m_pStickSound->PlayPosition(NULL, 1.0f, 0.8f + 0.2f * Core::Rand->Float(-1.0f,1.0f), false, CORE_AUDIO_TYPE_NONE, CORE_AUDIO_EFFECT_NONE, this->GetPosition());
+}
+
+
+// ****************************************************************
+void CArrow::__MoveEyes()
+{
+    constexpr coreVector2 vSize = (ARROW_EYE_SIZE_WHITE - ARROW_EYE_SIZE_BLACK) * 0.5f;
+
+    const coreFloat fAngle = FMODR(m_vView.MapToAxisInv(this->GetDirection().xy()).Angle() + CORE_MATH_PRECISION, -PI, PI);   // # add small delta to prevent issues with invalid tangents (PI*0.5f & PI*1.5f)
+    const coreFloat fTan   = TAN(fAngle + (PI*0.5f));
+    const coreFloat fPos   = (vSize.x * vSize.y) / SQRT(POW2(vSize.y) + POW2(vSize.x) * POW2(fTan)) * -SIGN(fAngle);
+
+    const coreVector2 vOffset = coreVector2(fPos, fPos * fTan) * m_vView.Length();
+
+    for(coreUintW i = 0u; i < ARROW_EYES; ++i)
+    {
+        const coreVector2 vSide = coreVector2((i ? -1.0f : 1.0f) * ARROW_EYE_MARGIN, 0.0f);
+
+        m_aEyeWhite[i].SetPosition (this->GetPosition() + coreVector3(vSide.MapToAxis(this->GetDirection().xy()), 0.0f));
+        m_aEyeWhite[i].SetDirection(this->GetDirection());
+        m_aEyeWhite[i].Move();
+    }
+
+    for(coreUintW i = 0u; i < ARROW_EYES; ++i)
+    {
+        m_aEyeBlack[i].SetPosition(m_aEyeWhite[i].GetPosition() + coreVector3(vOffset.MapToAxis(this->GetDirection().xy()), 0.0f));
+        m_aEyeBlack[i].Move();
+    }
 }
 
 

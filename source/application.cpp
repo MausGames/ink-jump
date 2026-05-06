@@ -57,6 +57,8 @@ void CoreApp::Setup()
     Core::Manager::Resource->Load<coreShader> ("object_arrow.frag",       CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_arrow.frag");
     Core::Manager::Resource->Load<coreShader> ("object_arrow_inst.vert",  CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_arrow.vert", CORE_SHADER_OPTION_INSTANCING);
     Core::Manager::Resource->Load<coreShader> ("object_arrow_inst.frag",  CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_arrow.frag", CORE_SHADER_OPTION_INSTANCING);
+    Core::Manager::Resource->Load<coreShader> ("object_eye.vert",         CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_eye.vert", CORE_SHADER_OPTION_NO_PERSPECTIVE);
+    Core::Manager::Resource->Load<coreShader> ("object_eye.frag",         CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_eye.frag", CORE_SHADER_OPTION_NO_PERSPECTIVE);
     Core::Manager::Resource->Load<coreShader> ("object_wall.vert",        CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_wall.vert");
     Core::Manager::Resource->Load<coreShader> ("object_wall.frag",        CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_wall.frag");
     Core::Manager::Resource->Load<coreShader> ("object_wall_inst.vert",   CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_wall.vert", CORE_SHADER_OPTION_INSTANCING);
@@ -96,6 +98,11 @@ void CoreApp::Setup()
     d_cast<coreProgram*>(Core::Manager::Resource->Load<coreProgram>("object_arrow_inst_program", CORE_RESOURCE_UPDATE_AUTO, NULL)->GetRawResource())
         ->AttachShader("object_arrow_inst.vert")
         ->AttachShader("object_arrow_inst.frag")
+        ->Finish();
+
+    d_cast<coreProgram*>(Core::Manager::Resource->Load<coreProgram>("object_eye_program", CORE_RESOURCE_UPDATE_AUTO, NULL)->GetRawResource())
+        ->AttachShader("object_eye.vert")
+        ->AttachShader("object_eye.frag")
         ->Finish();
 
     d_cast<coreProgram*>(Core::Manager::Resource->Load<coreProgram>("object_wall_program", CORE_RESOURCE_UPDATE_AUTO, NULL)->GetRawResource())

@@ -14,7 +14,11 @@
 
 
 // ****************************************************************
-#define ARROW_LAST_DELAY (0.1f)
+#define ARROW_LAST_DELAY     (0.1f)
+#define ARROW_EYE_SIZE_WHITE (coreVector2(1.0f,1.5f) * 1.05f)
+#define ARROW_EYE_SIZE_BLACK (coreVector2(0.6f,0.6f) * 1.05f)
+#define ARROW_EYE_MARGIN     (0.65f)
+#define ARROW_EYES           (2u)
 
 
 // ****************************************************************
@@ -31,6 +35,9 @@ private:
 
 
 private:
+    coreObject3D m_aEyeWhite[ARROW_EYES];
+    coreObject3D m_aEyeBlack[ARROW_EYES];
+
     coreVector2 m_vVelocity;
     coreVector2 m_vOldPos;
 
@@ -44,6 +51,8 @@ private:
 
     coreFlow m_fRotation;
 
+    coreVector2 m_vView;
+
     coreSoundPtr m_pJumpSound;
     coreSoundPtr m_pStickSound;
 
@@ -53,7 +62,8 @@ public:
 
     DISABLE_COPY(CArrow)
 
-    void Move()final;
+    void Render()final;
+    void Move  ()final;
 
     void MakeSticky(CWall* pWall, const coreVector2 vIntersection, const coreUint8 iSide);
 
@@ -66,6 +76,8 @@ public:
 
 
 private:
+    void __MoveEyes();
+
     coreVector2 __CalcStickyPos()const;
 };
 
