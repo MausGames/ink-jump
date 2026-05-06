@@ -25,9 +25,9 @@ by [Tim Beek](https://timbeek.com) from [Future Adventures Music Pack](https://t
 
 <table>
     <tr>
-        <td><a href="material/screenshots/inj_screen_001.jpg"><img src="material/screenshots/inj_screen_001t.jpg"></a></td>
-        <td><a href="material/screenshots/inj_screen_002.jpg"><img src="material/screenshots/inj_screen_002t.jpg"></a></td>
-        <td><a href="material/screenshots/inj_screen_003.jpg"><img src="material/screenshots/inj_screen_003t.jpg"></a></td>
+        <td><a href="material/screenshots/inj_screen_004.jpg"><img src="material/screenshots/inj_screen_004t.jpg"></a></td>
+        <td><a href="material/screenshots/inj_screen_005.jpg"><img src="material/screenshots/inj_screen_005t.jpg"></a></td>
+        <td><a href="material/screenshots/inj_screen_006.jpg"><img src="material/screenshots/inj_screen_006t.jpg"></a></td>
     </tr>
 </table>
 
