@@ -14,6 +14,7 @@
 // ****************************************************************
 #define PATH_RESERVE_TRAILS (512u)
 #define PATH_RESERVE_SPLATS (64u)
+#define PATH_RESERVE_DROPS  (256u)
 
 
 // ****************************************************************
@@ -22,12 +23,15 @@ class CPath final
 private:
     coreList<coreObject3D*> m_apTrail;
     coreList<coreObject3D*> m_apSplat;
+    coreList<coreObject3D*> m_apDrop;
 
     coreBatchList m_TrailList;
     coreBatchList m_SplatList;
+    coreBatchList m_DropList;
 
     coreMemoryPool m_TrailMemory;
     coreMemoryPool m_SplatMemory;
+    coreMemoryPool m_DropMemory;
 
     coreVector2 m_vLastPos;
     coreVector2 m_vLastDir;
@@ -35,6 +39,7 @@ private:
 
     coreUint8 m_iCurTrail;
     coreUint8 m_iCurSplat;
+    coreUint8 m_iCurDrop;
 
 
 public:
@@ -58,6 +63,7 @@ public:
 private:
     RETURN_RESTRICT coreObject3D* __CreateTrail();
     RETURN_RESTRICT coreObject3D* __CreateSplat();
+    RETURN_RESTRICT coreObject3D* __CreateDrop ();
 };
 
 

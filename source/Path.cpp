@@ -13,21 +13,27 @@
 CPath::CPath()noexcept
 : m_apTrail     {}
 , m_apSplat     {}
+, m_apDrop      {}
 , m_TrailList   (PATH_RESERVE_TRAILS)
 , m_SplatList   (PATH_RESERVE_SPLATS)
+, m_DropList    (PATH_RESERVE_DROPS)
 , m_TrailMemory (sizeof(coreObject3D), PATH_RESERVE_TRAILS)
 , m_SplatMemory (sizeof(coreObject3D), PATH_RESERVE_SPLATS)
+, m_DropMemory  (sizeof(coreObject3D), PATH_RESERVE_DROPS)
 , m_vLastPos    (coreVector2(FLT_MAX, FLT_MAX))
 , m_vLastDir    (coreVector2(0.0f,1.0f))
 , m_bTrack      (false)
 , m_iCurTrail   (0u)
 , m_iCurSplat   (0u)
+, m_iCurDrop    (0u)
 {
     m_apTrail.reserve(PATH_RESERVE_TRAILS);
     m_apSplat.reserve(PATH_RESERVE_SPLATS);
+    m_apDrop .reserve(PATH_RESERVE_DROPS);
 
     m_TrailList.DefineProgram("effect_splat_inst_program");
     m_SplatList.DefineProgram("effect_splat_inst_program");
+    m_DropList .DefineProgram("effect_splat_inst_program");
 
     coreObject3D* pPreload = this->__CreateSplat();
     pPreload->SetPosition(coreVector3(1000.0f,0.0f,0.0f));
@@ -40,12 +46,15 @@ CPath::~CPath()
 {
     m_TrailMemory.Shutdown();
     m_SplatMemory.Shutdown();
+    m_DropMemory .Shutdown();
 
     FOR_EACH(it, m_apTrail) POOLED_DELETE(m_TrailMemory, *it)
     FOR_EACH(it, m_apSplat) POOLED_DELETE(m_SplatMemory, *it)
+    FOR_EACH(it, m_apDrop)  POOLED_DELETE(m_DropMemory,  *it)
 
     m_apTrail.clear();
     m_apSplat.clear();
+    m_apDrop .clear();
 }
 
 
@@ -54,6 +63,7 @@ void CPath::Render()
 {
     m_TrailList.Render();
     m_SplatList.Render();
+    m_DropList .Render();
 }
 
 
@@ -73,8 +83,14 @@ void CPath::Move()
         (*it)->SetEnabled(coreMath::IsNear((*it)->GetPosition().y, fCamHeight, fCamRange) ? CORE_OBJECT_ENABLE_ALL : CORE_OBJECT_ENABLE_NOTHING);
     }
 
+    FOR_EACH(it, m_apDrop)
+    {
+        (*it)->SetEnabled(coreMath::IsNear((*it)->GetPosition().y, fCamHeight, fCamRange) ? CORE_OBJECT_ENABLE_ALL : CORE_OBJECT_ENABLE_NOTHING);
+    }
+
     m_TrailList.MoveNormal();
     m_SplatList.MoveNormal();
+    m_DropList .MoveNormal();
 }
 
 
@@ -87,7 +103,8 @@ void CPath::UpdateTrack(const coreVector2 vPosition)
     if(vDiff.IsNull()) return;
 
     const coreVector2 vNewDir = vDiff.Normalized();
-    const coreFloat   fAngle  = coreVector2::Angle(m_vLastDir, vNewDir);
+    const coreFloat   fAngle  = m_vLastDir.IsNull() ? 0.0f : coreVector2::Angle(m_vLastDir, vNewDir);
+    const coreVector2 vMiddle = m_vLastPos + vDiff * 0.5f;
 
     if((vDiff.LengthSq() >= POW2(1.2f)) || ((fAngle > 0.1f) && (fAngle < 0.8f)))
     {
@@ -95,10 +112,25 @@ void CPath::UpdateTrack(const coreVector2 vPosition)
 
         coreObject3D* pTrail = this->__CreateTrail();
 
-        pTrail->SetPosition (coreVector3(m_vLastPos + vDiff * 0.5f, 0.0f));
-        pTrail->SetSize     (coreVector3(0.5f, vDiff.Length() + 0.1f, 1.0f));
+        pTrail->SetPosition (coreVector3(vMiddle, 0.0f));
+        pTrail->SetSize     (coreVector3(0.55f, vDiff.Length() + 0.13f, 1.0f));
         pTrail->SetDirection(coreVector3(vDiff.Normalized(), 0.0f));
         pTrail->SetColor3   (coreVector3(1.0f,1.0f,1.0f));
+
+        m_vLastPos = vPosition;
+        m_vLastDir = vNewDir;
+    }
+
+    if(fAngle >= 0.8f)
+    {
+        m_iCurDrop += 1u;
+
+        coreObject3D* pDrop = this->__CreateDrop();
+
+        pDrop->SetPosition (coreVector3(vMiddle, 0.0f));
+        pDrop->SetSize     (coreVector3(1.0f,1.0f,1.0f) * 0.7f);
+        pDrop->SetTexSize  (coreVector2(1.0f,1.0f) * (1.0f/12.0f));
+        pDrop->SetTexOffset(coreVector2(7.0f,4.0f) * (1.0f/12.0f));
 
         m_vLastPos = vPosition;
         m_vLastDir = vNewDir;
@@ -110,6 +142,7 @@ void CPath::UpdateTrack(const coreVector2 vPosition)
 void CPath::StartTrack(const coreVector2 vPosition)
 {
     m_vLastPos = vPosition;
+    m_vLastDir = coreVector2(0.0f,0.0f);
     m_bTrack   = true;
 }
 
@@ -146,6 +179,23 @@ void CPath::AddSplat(const coreVector2 vPosition, const coreVector2 vVelocity)
     pSplat->SetDirection(coreVector3(vDirection, 0.0f));
     pSplat->SetTexSize  (coreVector2(1.0f,1.0f) * (1.0f/4.0f));
     pSplat->SetTexOffset(vOffset * (1.0f/4.0f));
+
+    const coreUintW iNum = Core::Rand->Uint(3u, 6u);
+
+    for(coreUintW i = 0u; i < iNum; ++i)
+    {
+        m_iCurDrop += 1u;
+
+        const coreVector2 vDirection2 = coreVector2::Direction((I_TO_F(i) / I_TO_F(iNum)) * (2.0f*PI) + Core::Rand->Float(-0.5f, 0.5f));
+
+        coreObject3D* pDrop = this->__CreateDrop();
+
+        pDrop->SetPosition (coreVector3(vPosition + vDirection2 * Core::Rand->Float(4.9f, 7.5f), 0.0f));
+        pDrop->SetSize     (coreVector3(1.0f, Core::Rand->Float(1.2f, 1.9f), 1.0f) * Core::Rand->Float(1.0f, 1.6f));
+        pDrop->SetDirection(coreVector3(vDirection2, 0.0f));
+        pDrop->SetTexSize  (coreVector2(1.0f,1.0f) * (1.0f/12.0f));
+        pDrop->SetTexOffset(coreVector2(7.0f,4.0f) * (1.0f/12.0f));
+    }
 }
 
 
@@ -178,4 +228,20 @@ RETURN_RESTRICT coreObject3D* CPath::__CreateSplat()
     m_SplatList.BindObject(pSplat);
 
     return pSplat;
+}
+
+
+// ****************************************************************
+RETURN_RESTRICT coreObject3D* CPath::__CreateDrop()
+{
+    coreObject3D* pDrop = POOLED_NEW(m_DropMemory, coreObject3D);
+
+    pDrop->DefineModel  (Core::Manager::Object->GetLowQuad());
+    pDrop->DefineTexture(0u, "effect_splat.webp");
+    pDrop->DefineProgram("effect_splat_program");
+
+    m_apDrop  .push_back (pDrop);
+    m_DropList.BindObject(pDrop);
+
+    return pDrop;
 }
