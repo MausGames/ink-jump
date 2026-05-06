@@ -17,5 +17,5 @@ void VertexMain()
     gl_Position      = coreObject3DPositionLow();
     v_av2TexCoord[0] = coreObject3DTexCoordLow();
 
-    v_v1Height = coreObject3DTransformRaw().y * 0.002 + 0.6;
+    v_v1Height = coreObject3DTransformRaw().y * 0.003 + 0.6;
 }

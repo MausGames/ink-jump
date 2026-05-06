@@ -49,10 +49,10 @@ void CoreApp::Setup()
     Core::Manager::Resource->Load<coreShader> ("effect_canvas.frag",      CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/effect_canvas.frag");
     Core::Manager::Resource->Load<coreShader> ("effect_dark.vert",        CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/effect_dark.vert", CORE_SHADER_OPTION_NO_ROTATION);
     Core::Manager::Resource->Load<coreShader> ("effect_dark.frag",        CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/effect_dark.frag");
-    Core::Manager::Resource->Load<coreShader> ("effect_splat.vert",       CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/effect_splat.vert");
-    Core::Manager::Resource->Load<coreShader> ("effect_splat.frag",       CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/effect_splat.frag");
-    Core::Manager::Resource->Load<coreShader> ("effect_splat_inst.vert",  CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/effect_splat.vert", CORE_SHADER_OPTION_INSTANCING);
-    Core::Manager::Resource->Load<coreShader> ("effect_splat_inst.frag",  CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/effect_splat.frag", CORE_SHADER_OPTION_INSTANCING);
+    Core::Manager::Resource->Load<coreShader> ("effect_splat.vert",       CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/effect_splat.vert", CORE_SHADER_OPTION_NO_PERSPECTIVE);
+    Core::Manager::Resource->Load<coreShader> ("effect_splat.frag",       CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/effect_splat.frag", CORE_SHADER_OPTION_NO_PERSPECTIVE);
+    Core::Manager::Resource->Load<coreShader> ("effect_splat_inst.vert",  CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/effect_splat.vert", CORE_SHADER_OPTION_INSTANCING CORE_SHADER_OPTION_NO_PERSPECTIVE);
+    Core::Manager::Resource->Load<coreShader> ("effect_splat_inst.frag",  CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/effect_splat.frag", CORE_SHADER_OPTION_INSTANCING CORE_SHADER_OPTION_NO_PERSPECTIVE);
     Core::Manager::Resource->Load<coreShader> ("object_arrow.vert",       CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_arrow.vert");
     Core::Manager::Resource->Load<coreShader> ("object_arrow.frag",       CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_arrow.frag");
     Core::Manager::Resource->Load<coreShader> ("object_arrow_inst.vert",  CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_arrow.vert", CORE_SHADER_OPTION_INSTANCING);
@@ -61,7 +61,7 @@ void CoreApp::Setup()
     Core::Manager::Resource->Load<coreShader> ("object_wall.frag",        CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_wall.frag");
     Core::Manager::Resource->Load<coreShader> ("object_wall_inst.vert",   CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_wall.vert", CORE_SHADER_OPTION_INSTANCING);
     Core::Manager::Resource->Load<coreShader> ("object_wall_inst.frag",   CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_wall.frag", CORE_SHADER_OPTION_INSTANCING);
-    Core::Manager::Resource->Load<coreShader> ("point.frag",              CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/point.frag", CORE_SHADER_OPTION_NO_ROTATION CORE_SHADER_OPTION_NO_PERSPECTIVE);
+    Core::Manager::Resource->Load<coreShader> ("point.frag",              CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/point.frag", CORE_SHADER_OPTION_NO_PERSPECTIVE);
 
     Core::Manager::Resource->Load<coreSound>  ("jump.opus",               CORE_RESOURCE_UPDATE_AUTO,   "data/sounds/jump.opus", CORE_SOUND_LOAD_MULAW);
     Core::Manager::Resource->Load<coreSound>  ("stick.opus",              CORE_RESOURCE_UPDATE_AUTO,   "data/sounds/stick.opus", CORE_SOUND_LOAD_MULAW);

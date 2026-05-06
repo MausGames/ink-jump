@@ -36,12 +36,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\application.cpp" />
+    <ClCompile Include="..\..\..\source\Arrow.cpp" />
+    <ClCompile Include="..\..\..\source\Canvas.cpp" />
+    <ClCompile Include="..\..\..\source\Game.cpp" />
+    <ClCompile Include="..\..\..\source\Interface.cpp" />
+    <ClCompile Include="..\..\..\source\Level.cpp" />
     <ClCompile Include="..\..\..\source\main.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\Path.cpp" />
+    <ClCompile Include="..\..\..\source\Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\source\Arrow.h" />
+    <ClInclude Include="..\..\..\source\Canvas.h" />
+    <ClInclude Include="..\..\..\source\Game.h" />
+    <ClInclude Include="..\..\..\source\Interface.h" />
     <ClInclude Include="..\..\..\source\main.h" />
+    <ClInclude Include="..\..\..\source\Path.h" />
+    <ClInclude Include="..\..\..\source\Wall.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windows\version.rc" />

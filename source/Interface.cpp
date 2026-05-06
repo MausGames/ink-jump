@@ -13,7 +13,7 @@
 // 
 static coreRichText::coreAnim AnimateFunc(const coreRichText::coreCharacter& oCharacter, void* pData)
 {
-    const coreFloat   fTime  = Core::System->GetTotalTimeFloat(2.0f*PI) * 2.0f;
+    const coreFloat   fTime  = Core::System->GetTotalTimeFloat(2.0*PI_D) * 2.0f;
     const coreVector2 vShift = coreVector2::Direction(fTime + I_TO_F(oCharacter.iOrder) * GA) * 0.003f;
 
     coreRichText::coreAnim oAnim;

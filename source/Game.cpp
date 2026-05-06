@@ -25,8 +25,8 @@ CGame::CGame()noexcept
     m_WallList.DefineProgram("object_wall_inst_program");
     m_WallList.CreateCustom(sizeof(coreFloat) * 2u, [](coreVertexBuffer* OUTPUT pBuffer)
     {
-        pBuffer->DefineAttribute(WALL_SHADER_ATTRIBUTE_LENGTH_NUM,    1u, GL_FLOAT, sizeof(coreFloat), false, 0u, 0u);
-        pBuffer->DefineAttribute(WALL_SHADER_ATTRIBUTE_LENGTHDIV_NUM, 1u, GL_FLOAT, sizeof(coreFloat), false, 0u, sizeof(coreFloat));
+        pBuffer->DefineAttribute(WALL_SHADER_ATTRIBUTE_LENGTH_NUM,    CORE_VERTEX_SPEC_FLOAT_1X32, 0u, 0u);
+        pBuffer->DefineAttribute(WALL_SHADER_ATTRIBUTE_LENGTHDIV_NUM, CORE_VERTEX_SPEC_FLOAT_1X32, 0u, sizeof(coreFloat));
     },
     [](coreByte* OUTPUT pData, const coreObject3D* pObject)
     {

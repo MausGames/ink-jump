@@ -16,7 +16,7 @@ CCanvas::CCanvas()noexcept
 , m_aSide       {}
 , m_fDarkHeight (0.0f)
 {
-    const coreVector3 vColor = coreVector3(1.0f,1.0f,1.0f) * coreMath::FloorFactor(COLOR_BLACK, 1.0f/255.0f);   // get same color as with instancing compression
+    const coreVector3 vColor = coreVector3(1.0f,1.0f,1.0f) * coreMath::RoundFactor(COLOR_BLACK, 1.0f/255.0f);   // get same color as with instancing compression
 
     this->DefineModel  (Core::Manager::Object->GetLowQuad());
     this->DefineProgram("effect_canvas_program");
@@ -43,7 +43,7 @@ void CCanvas::Render()
     if(!this->GetProgram().IsUsable()) return;
     if(!this->GetProgram()->Enable())  return;
 
-    this->GetProgram()->SendUniform("u_v1Time", Core::System->GetTotalTimeFloat(2.0f*PI));
+    this->GetProgram()->SendUniform("u_v1Time", Core::System->GetTotalTimeFloat(2.0*PI_D));
 
     glDisable(GL_BLEND);
     {
